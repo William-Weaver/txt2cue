@@ -30,30 +30,36 @@
 """
 import sys
 
-word = "junk"
-for line in sys.stdin.readlines():
-    if line[0] == "#":
-        #sys.stdout.write("Ignoring Comment")
-        next
-    elif line[0:6] == "album=":
-        words = line.split('=')
-        album = words[1].rstrip('\n')
-        sys.stdout.write('TITLE "' + album + '"\n')
-    elif line[0:7] == "artist=":
-        words = line.split('=')
-        artist = words[1].rstrip('\n')
-        sys.stdout.write('PERFORMER "' + artist + '"\n')
-    elif line[0:5] == "file=":
-        words = line.split('=')
-        file = words[1].rstrip('\n')
-        sys.stdout.write('FILE ' + file + '\n')
-    else:
-        words = line.split('|')
-        track = words[0].rstrip('\n')
-        title = words[1].rstrip('\n')
-        start_time = words[2].rstrip('\n')
-        sys.stdout.write('TRACK ' + track + ' AUDIO\n')
-        sys.stdout.write('FLAGS PRE\n')
-        sys.stdout.write('TITLE "' + title + '"\n')
-        sys.stdout.write('PERFORMER "' + artist + '"\n')
-        sys.stdout.write('INDEX 01 ' + start_time + '\n')
+def parse_input(file_obj):
+	word = "junk"
+	output = []
+	for line in file_obj.readlines():
+	    if line[0] == "#":
+		#sys.stdout.write("Ignoring Comment")
+		next
+	    elif line[0:6] == "album=":
+		words = line.split('=')
+		album = words[1].rstrip('\n')
+		output.append('TITLE "' + album + '"')
+	    elif line[0:7] == "artist=":
+		words = line.split('=')
+		artist = words[1].rstrip('\n')
+		output.append('PERFORMER "' + artist + '"')
+	    elif line[0:5] == "file=":
+		words = line.split('=')
+		file = words[1].rstrip('\n')
+		output.append('FILE ' + file)
+	    else:
+		words = line.split('|')
+		track = words[0].rstrip('\n')
+		title = words[1].rstrip('\n')
+		start_time = words[2].rstrip('\n')
+		output.append('TRACK ' + track + ' AUDIO')
+		output.append('FLAGS PRE')
+		output.append('TITLE "' + title + '"')
+		output.append('PERFORMER "' + artist + '"')
+		output.append('INDEX 01 ' + start_time + '')
+        return '\n'.join(output)
+
+if __name__ == '__main__':
+    sys.stdout.write(parse_input(sys.stdin))
