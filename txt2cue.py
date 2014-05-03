@@ -34,6 +34,7 @@ def parse_input(file_obj):
 	word = "junk"
 	output = []
 	for line in file_obj.readlines():
+            line = line.strip()
 	    if line.startswith("#"):
 		#sys.stdout.write("Ignoring Comment")
 		next
@@ -49,7 +50,7 @@ def parse_input(file_obj):
 		words = line.split('=')
 		file = words[1].rstrip('\n')
 		output.append('FILE ' + file)
-	    else:
+	    elif line:
 		words = line.split('|')
 		track = words[0].rstrip('\n')
 		title = words[1].rstrip('\n')
