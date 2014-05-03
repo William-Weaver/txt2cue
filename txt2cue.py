@@ -40,21 +40,21 @@ def parse_input(file_obj):
 		continue
 	    elif line.startswith("album="):
 		words = line.split('=')
-		album = words[1].rstrip('\n')
+		album = words[1]
 		output.append('TITLE "' + album + '"')
 	    elif line.startswith("artist="):
 		words = line.split('=')
-		artist = words[1].rstrip('\n')
+		artist = words[1]
 		output.append('PERFORMER "' + artist + '"')
 	    elif line.startswith("file="):
 		words = line.split('=')
-		file = words[1].rstrip('\n')
+		file = words[1]
 		output.append('FILE ' + file)
 	    elif line:
 		words = line.split('|')
-		track = words[0].rstrip('\n')
-		title = words[1].rstrip('\n')
-		start_time = words[2].rstrip('\n')
+		track = words[0]
+		title = words[1]
+		start_time = words[2]
 		output.append('TRACK ' + track + ' AUDIO')
 		output.append('FLAGS PRE')
 		output.append('TITLE "' + title + '"')
