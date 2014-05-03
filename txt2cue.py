@@ -36,8 +36,8 @@ def parse_input(file_obj):
 	for line in file_obj.readlines():
             line = line.strip()
 	    if line.startswith("#"):
-		#sys.stdout.write("Ignoring Comment")
-		next
+		# Ignore comments
+		continue
 	    elif line.startswith("album="):
 		words = line.split('=')
 		album = words[1].rstrip('\n')
