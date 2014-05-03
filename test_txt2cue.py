@@ -1,5 +1,5 @@
 import unittest
-from StringIO import StringIO
+from io import StringIO
 from txt2cue import parse_input, process_key_val_pair
 
 
@@ -20,7 +20,7 @@ file=/home/user/Music/James_Taylor/Sweet_Baby_James/test.flac
         self.assertEqual(
             process_key_val_pair('goodbye =  world  '),
             ('goodbye', 'world'))
-	
+
     def test_parsing(self):
         result = parse_input(self.input_file)
         expected_output = '''PERFORMER "James Taylor"

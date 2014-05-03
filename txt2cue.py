@@ -52,8 +52,7 @@ def parse_input(file_obj):
         elif line.startswith("file="):
             _, file_name = process_key_val_pair(line)
             output.append('FILE ' + file_name)
-        #elif line:
-        else:
+        elif line:
             track, title, start_time = line.split('|')
             output.append(
                 'TRACK {track} AUDIO\n'
