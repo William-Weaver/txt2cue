@@ -10,8 +10,8 @@
     artist=James Taylor
     album=Sweet Baby James
     file=/home/user/Music/James_Taylor/Sweet_Baby_James/test.flac
-    01|Sweet Baby James|00:00:00
-    02|Lo And Behold|02:54:00
+    Sweet Baby James|00:00:00
+    Lo And Behold|02:54:00
 
  Output from the above:
     PERFORMER "James Taylor"
@@ -38,6 +38,7 @@ def process_key_val_pair(line):
 
 def parse_input(file_obj):
     output = []
+    track = 0
     for line in file_obj.readlines():
         line = line.strip()
         if line.startswith("#"):
@@ -53,9 +54,10 @@ def parse_input(file_obj):
             _, file_name = process_key_val_pair(line)
             output.append('FILE ' + file_name)
         elif line:
-            track, title, start_time = line.split('|')
+            title, start_time = line.split('|')
+            track += 1
             output.append(
-                'TRACK {track} AUDIO\n'
+                'TRACK {track:02d} AUDIO\n'
                 'FLAGS PRE\n'
                 'TITLE "{title}"\n'
                 'PERFORMER "{artist}"\n'

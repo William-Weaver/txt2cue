@@ -10,8 +10,8 @@ class TestTxt2Cue(unittest.TestCase):
 artist=James Taylor
 album=Sweet Baby James
 file=/home/user/Music/James_Taylor/Sweet_Baby_James/test.flac
-01|Sweet Baby James|00:00:00
-02|Lo And Behold|02:54:00
+Sweet Baby James|00:00:00
+Lo And Behold|02:54:00
 ''')
     def test_process_key_val_pair(self):
         self.assertEqual(
