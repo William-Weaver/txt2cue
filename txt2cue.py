@@ -30,37 +30,40 @@
 """
 import sys
 
+
 def process_key_val_pair(line):
     key, value = line.split('=')
     return key.strip(), value.strip()
 
+
 def parse_input(file_obj):
-	output = []
-	for line in file_obj.readlines():
-            line = line.strip()
-	    if line.startswith("#"):
-		# Ignore comments
-		continue
-	    elif line.startswith("album="):
-		_, album = process_key_val_pair(line)
-		output.append('TITLE "{}"'.format(album))
-	    elif line.startswith("artist="):
-		_, artist = process_key_val_pair(line)
-		output.append('PERFORMER "{}"'.format(artist))
-	    elif line.startswith("file="):
-		_, file_name = process_key_val_pair(line)
-		output.append('FILE ' + file_name)
-	    elif line:
-		track, title, start_time = line.split('|')
-		output.append(
-                    'TRACK {track} AUDIO\n'
-                    'FLAGS PRE\n'
-                    'TITLE "{title}"\n'
-                    'PERFORMER "{artist}"\n'
-                    'INDEX 01 {start_time}'.format(
-		        track=track, title=title, artist=artist,
-                        start_time=start_time))
-        return '\n'.join(output)
+    output = []
+    for line in file_obj.readlines():
+        line = line.strip()
+        if line.startswith("#"):
+            # Ignore comments
+            continue
+        elif line.startswith("album="):
+            _, album = process_key_val_pair(line)
+            output.append('TITLE "{}"'.format(album))
+        elif line.startswith("artist="):
+            _, artist = process_key_val_pair(line)
+            output.append('PERFORMER "{}"'.format(artist))
+        elif line.startswith("file="):
+            _, file_name = process_key_val_pair(line)
+            output.append('FILE ' + file_name)
+        #elif line:
+        else:
+            track, title, start_time = line.split('|')
+            output.append(
+                'TRACK {track} AUDIO\n'
+                'FLAGS PRE\n'
+                'TITLE "{title}"\n'
+                'PERFORMER "{artist}"\n'
+                'INDEX 01 {start_time}'.format(
+                    track=track, title=title, artist=artist,
+                    start_time=start_time))
+    return '\n'.join(output)
 
 if __name__ == '__main__':
     sys.stdout.write(parse_input(sys.stdin))
