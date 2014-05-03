@@ -51,15 +51,15 @@ def parse_input(file_obj):
 		_, file_name = process_key_val_pair(line)
 		output.append('FILE ' + file_name)
 	    elif line:
-		words = line.split('|')
-		track = words[0]
-		title = words[1]
-		start_time = words[2]
-		output.append('TRACK ' + track + ' AUDIO')
-		output.append('FLAGS PRE')
-		output.append('TITLE "' + title + '"')
-		output.append('PERFORMER "' + artist + '"')
-		output.append('INDEX 01 ' + start_time + '')
+		track, title, start_time = line.split('|')
+		output.append(
+                    'TRACK {track} AUDIO\n'
+                    'FLAGS PRE\n'
+                    'TITLE "{title}"\n'
+                    'PERFORMER "{artist}"\n'
+                    'INDEX 01 {start_time}'.format(
+		        track=track, title=title, artist=artist,
+                        start_time=start_time))
         return '\n'.join(output)
 
 if __name__ == '__main__':
