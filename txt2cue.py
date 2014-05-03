@@ -31,7 +31,6 @@
 import sys
 
 def parse_input(file_obj):
-	word = "junk"
 	output = []
 	for line in file_obj.readlines():
             line = line.strip()
