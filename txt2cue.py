@@ -34,18 +34,18 @@ def parse_input(file_obj):
 	word = "junk"
 	output = []
 	for line in file_obj.readlines():
-	    if line[0] == "#":
+	    if line.startswith("#"):
 		#sys.stdout.write("Ignoring Comment")
 		next
-	    elif line[0:6] == "album=":
+	    elif line.startswith("album="):
 		words = line.split('=')
 		album = words[1].rstrip('\n')
 		output.append('TITLE "' + album + '"')
-	    elif line[0:7] == "artist=":
+	    elif line.startswith("artist="):
 		words = line.split('=')
 		artist = words[1].rstrip('\n')
 		output.append('PERFORMER "' + artist + '"')
-	    elif line[0:5] == "file=":
+	    elif line.startswith("file="):
 		words = line.split('=')
 		file = words[1].rstrip('\n')
 		output.append('FILE ' + file)
