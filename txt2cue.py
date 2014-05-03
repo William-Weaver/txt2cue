@@ -30,6 +30,10 @@
 """
 import sys
 
+def process_key_val_pair(line):
+    key, value = line.split('=')
+    return key.strip(), value.strip()
+
 def parse_input(file_obj):
 	output = []
 	for line in file_obj.readlines():
@@ -38,17 +42,14 @@ def parse_input(file_obj):
 		# Ignore comments
 		continue
 	    elif line.startswith("album="):
-		words = line.split('=')
-		album = words[1]
-		output.append('TITLE "' + album + '"')
+		_, album = process_key_val_pair(line)
+		output.append('TITLE "{}"'.format(album))
 	    elif line.startswith("artist="):
-		words = line.split('=')
-		artist = words[1]
-		output.append('PERFORMER "' + artist + '"')
+		_, artist = process_key_val_pair(line)
+		output.append('PERFORMER "{}"'.format(artist))
 	    elif line.startswith("file="):
-		words = line.split('=')
-		file = words[1]
-		output.append('FILE ' + file)
+		_, file_name = process_key_val_pair(line)
+		output.append('FILE ' + file_name)
 	    elif line:
 		words = line.split('|')
 		track = words[0]

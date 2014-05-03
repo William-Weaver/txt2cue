@@ -1,6 +1,6 @@
 import unittest
 from StringIO import StringIO
-from txt2cue import parse_input
+from txt2cue import parse_input, process_key_val_pair
 
 
 class TestTxt2Cue(unittest.TestCase):
@@ -13,6 +13,13 @@ file=/home/user/Music/James_Taylor/Sweet_Baby_James/test.flac
 01|Sweet Baby James|00:00:00
 02|Lo And Behold|02:54:00
 ''')
+    def test_process_key_val_pair(self):
+        self.assertEqual(
+            process_key_val_pair('hello=world'),
+            ('hello', 'world'))
+        self.assertEqual(
+            process_key_val_pair('goodbye =  world  '),
+            ('goodbye', 'world'))
 	
     def test_parsing(self):
         result = parse_input(self.input_file)
