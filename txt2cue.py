@@ -33,24 +33,46 @@ import yaml
 
 
 def parse_input(file_obj):
-    data = yaml.load(file_obj)
-    output = [
-        'PERFORMER "{}"'.format(data['artist']),
-        'TITLE "{}"'.format(data['album']),
-        'FILE {}'.format(data['file'])]
-    for num, track_info in enumerate(data['tracks'], start=1):
-        title, start_time = track_info.split('|')
-        title = title.strip()
-        start_time = start_time.strip()
-        output.append(
-                'TRACK {num:02d} AUDIO\n'
-                'FLAGS PRE\n'
-                'TITLE "{title}"\n'
-                'PERFORMER "{artist}"\n'
-                'INDEX 01 {start_time}'.format(
-                    num=num, title=title, artist=data['artist'],
-                    start_time=start_time))
+    try:
+        data = yaml.load(file_obj)
+    except yaml.YAMLError as e:
+        sys.stderr.write("Error in yaml input file:" + e)
+    else:
+        try:
+            last = 'artist'
+            artist = data['artist']
+            last = 'album'
+            album = data['album']
+            last = 'file'
+            file = data['file']
+            last = 'tracks'
+            tracks = data['tracks']
+        except TypeError:
+            sys.stderr.write(
+                'Error in input: "' + last + '" not well formed.\n')
+            sys.stderr.write('Data was:\n' + data)
+            sys.exit(1)
+        else:
+            output = [
+                'PERFORMER "{}"'.format(artist),
+                'TITLE "{}"'.format(album),
+                'FILE {}'.format(file)]
+            for num, track_info in enumerate(tracks, start=1):
+                title, start_time = track_info.split('|')
+                title = title.strip()
+                start_time = start_time.strip()
+                output.append(
+                    'TRACK {num:02d} AUDIO\n'
+                    'FLAGS PRE\n'
+                    'TITLE "{title}"\n'
+                    'PERFORMER "{artist}"\n'
+                    'INDEX 01 {start_time}'.format(
+                        num=num, title=title, artist=data['artist'],
+                        start_time=start_time))
     return '\n'.join(output)
 
 if __name__ == '__main__':
-    sys.stdout.write(parse_input(sys.stdin))
+    try:
+        sys.stdout.write(parse_input(sys.stdin))
+    except ValueError as e:
+        sys.stderr.write('Invalid input: ' + e)
