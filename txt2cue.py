@@ -32,18 +32,17 @@ import sys
 import yaml
 
 
-def check_data(key, input):
-    try:
+def check_data(input):
+    badcount = 0
+    for key in ['artist', 'album', 'file', 'tracks']:
         if key not in input:
             sys.stderr.write(
                 'Error in input: "' + key + '" not present.\n')
-            return False
-        else:
-            return True
-    except TypeError:
-        sys.stderr.write(
-            'Error in input: "' + key + '" not well formed.\n')
+            badcount += 1
+    if badcount > 0:
         return False
+    else:
+        return True
 
 
 def parse_input(file_obj):
@@ -53,11 +52,7 @@ def parse_input(file_obj):
         sys.stderr.write("Error in yaml input file:" + e)
     else:
         try:
-            has_artist = check_data('artist', data)
-            has_album = check_data('album', data)
-            has_file = check_data('file', data)
-            has_tracks = check_data('tracks', data)
-            if has_artist and has_album and has_file and has_tracks:
+            if check_data(data):
                 album = data['album']
                 artist = data['artist']
                 file = data['file']
