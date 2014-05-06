@@ -32,6 +32,20 @@ import sys
 import yaml
 
 
+def check_data(key, input):
+    try:
+        if key not in input:
+            sys.stderr.write(
+                'Error in input: "' + key + '" not present.\n')
+            return False
+        else:
+            return True
+    except TypeError:
+        sys.stderr.write(
+            'Error in input: "' + key + '" not well formed.\n')
+        return False
+
+
 def parse_input(file_obj):
     try:
         data = yaml.load(file_obj)
@@ -39,18 +53,22 @@ def parse_input(file_obj):
         sys.stderr.write("Error in yaml input file:" + e)
     else:
         try:
-            last = 'artist'
-            artist = data['artist']
-            last = 'album'
-            album = data['album']
-            last = 'file'
-            file = data['file']
-            last = 'tracks'
-            tracks = data['tracks']
+            has_artist = check_data('artist', data)
+            has_album = check_data('album', data)
+            has_file = check_data('file', data)
+            has_tracks = check_data('tracks', data)
+            if has_artist and has_album and has_file and has_tracks:
+                album = data['album']
+                artist = data['artist']
+                file = data['file']
+                tracks = data['tracks']
+            else:
+                sys.stderr.write('Malformed data - exiting\n')
+                sys.stderr.write(data)
+                sys.exit(1)
         except TypeError:
-            sys.stderr.write(
-                'Error in input: "' + last + '" not well formed.\n')
-            sys.stderr.write('Data was:\n' + data)
+            sys.stderr.write('Data was:\n')
+            sys.stderr.write(data)
             sys.exit(1)
         else:
             output = [
@@ -74,5 +92,5 @@ def parse_input(file_obj):
 if __name__ == '__main__':
     try:
         sys.stdout.write(parse_input(sys.stdin))
-    except ValueError as e:
-        sys.stderr.write('Invalid input: ' + e)
+    except:
+        sys.stderr.write('Done')
